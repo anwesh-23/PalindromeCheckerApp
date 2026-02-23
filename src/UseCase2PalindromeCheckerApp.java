@@ -44,6 +44,8 @@ public class UseCase2PalindromeCheckerApp {
                 break;
             }
         }
+
+
         System.out.println("Input Text :"+input);
         // Display result using conditional statement
         if (isPalindrome) {
@@ -51,5 +53,8 @@ public class UseCase2PalindromeCheckerApp {
         } else {
             System.out.println("Is it Palindrome? : false");
         }
+
+
+
     }
 }
