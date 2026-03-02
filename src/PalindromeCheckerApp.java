@@ -1,70 +1,106 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 /**
- * =========================================================
- * MAIN CLASS - UseCase7PalindromeCheckerApp
- * =========================================================
+ * ==============================================================
+ * MAIN CLASS - UseCase8PalindromeCheckerApp
+ * ==============================================================
  *
- * Use Case 7: Deque Based Optimized Palindrome Checker
+ * Use Case 8: Linked List Based Palindrome Checker
  *
  * Description:
- * This class validates a palindrome using a Deque
- * (Double Ended Queue).
+ * This class checks whether a string is a palindrome
+ * using a singly linked list.
  *
- * Characters are inserted into the deque and then
- * compared by removing elements from both ends:
- *
- *  - removeFirst()
- *  - removeLast()
- *
- * This avoids reversing the string and provides an
- * efficient front-to-back comparison approach.
- *
- * This use case demonstrates optimal bidirectional
- * traversal using Deque.
+ * Steps:
+ * 1. Convert string into linked list
+ * 2. Find middle using fast & slow pointers
+ * 3. Reverse second half of list
+ * 4. Compare both halves
  *
  * @author Developer
- * @version 7.0
+ * @version 8.0
  */
 
 public class PalindromeCheckerApp {
 
+    // Node class for singly linked list
+    static class Node {
+        char data;
+        Node next;
+
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    // Function to check palindrome
+    public static boolean isPalindrome(Node head) {
+        if (head == null || head.next == null)
+            return true;
+
+        Node slow = head;
+        Node fast = head;
+
+        // Find middle using fast & slow pointers
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Reverse second half
+        Node prev = null;
+        Node current = slow;
+        Node next;
+
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        // Compare first half and reversed second half
+        Node firstHalf = head;
+        Node secondHalf = prev;
+
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data)
+                return false;
+
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        return true;
+    }
+
+    // Convert string to linked list
+    public static Node createList(String input) {
+        Node head = null, tail = null;
+
+        for (char c : input.toCharArray()) {
+            Node newNode = new Node(c);
+            if (head == null) {
+                head = tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+        }
+        return head;
+    }
+
     /**
-     * Application entry point for UC7.
-     *
-     * @param args Command-line arguments
+     * Application entry point for UC8
      */
     public static void main(String[] args) {
 
-        // Define the input string
-        String input = "refer";
+        String input = "level";   // change input here
 
-        // Create a Deque to store characters
-        Deque<Character> deque = new ArrayDeque<>();
+        Node head = createList(input);
 
-        // Add each character to the deque
-        for (char c : input.toCharArray()) {
-            deque.add(c);
-        }
+        boolean result = isPalindrome(head);
 
-        // Flag to track palindrome result
-        boolean isPalindrome = true;
-
-        // Continue comparison while more than one element exists
-        while (deque.size() > 1) {
-
-            char first = deque.removeFirst();
-            char last = deque.removeLast();
-
-            if (first != last) {
-                isPalindrome = false;
-                break;
-            }
-        }
-
-        // Display result
         System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+        System.out.println("Is Palindrome? : " + result);
     }
 }
