@@ -1,78 +1,59 @@
 /**
  * ==============================================================
- * MAIN CLASS - UseCase12PalindromeCheckerApp
+ * MAIN CLASS - UseCase13PalindromeCheckerApp
  * ==============================================================
  *
- * Use Case 12: Strategy Pattern for Palindromes
+ * Use Case 13: Performance Comparison
  *
  * Description:
- * Demonstrates how different palindrome validation
- * algorithms can be selected dynamically at runtime
- * using the Strategy Design Pattern.
+ * This class measures and compares the execution
+ * performance of a palindrome validation algorithm.
  *
  * The application:
- *  - Defines a PalindromeStrategy interface
- *  - Implements a Stack-based strategy
- *  - Injects the strategy at runtime
- *  - Executes the selected algorithm
+ *  - Captures start & end execution time
+ *  - Calculates total duration
+ *  - Displays benchmarking results
  *
- * Focus: Algorithm interchangeability & extensibility
+ * Focus: Performance measurement concepts
  *
  * @author Developer
- * @version 12.0
+ * @version 13.0
  */
 
-public class UseCase12PalindromeCheckerApp {
+public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         String input = "level";
 
-        // Inject strategy at runtime
-        PalindromeStrategy strategy = new StackStrategy();
+        // Capture start time
+        long startTime = System.nanoTime();
 
-        boolean result = strategy.check(input);
+        boolean result = isPalindrome(input);
+
+        // Capture end time
+        long endTime = System.nanoTime();
+
+        long executionTime = endTime - startTime;
 
         System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + result);
+        System.out.println("Execution Time : " + executionTime + " ns");
     }
-}
 
-/**
- * INTERFACE: PalindromeStrategy
- *
- * Defines a contract for palindrome algorithms.
- */
-interface PalindromeStrategy {
-    boolean check(String input);
-}
+    // Simple palindrome check method
+    public static boolean isPalindrome(String input) {
 
-/**
- * CLASS: StackStrategy
- *
- * Implements palindrome validation using Stack.
- */
-class StackStrategy implements PalindromeStrategy {
+        int start = 0;
+        int end = input.length() - 1;
 
-    /**
-     * Uses LIFO behavior of stack to compare characters.
-     */
-    public boolean check(String input) {
-
-        java.util.Stack<Character> stack = new java.util.Stack<>();
-
-        // Push characters onto stack
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare by popping from stack
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
+        while (start < end) {
+            if (input.charAt(start) != input.charAt(end)) {
                 return false;
             }
+            start++;
+            end--;
         }
-
         return true;
     }
 }
